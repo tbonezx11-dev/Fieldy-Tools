@@ -1,0 +1,24 @@
+{
+  hooks: {
+    enabled: true,
+    // Generate with: openssl rand -hex 32
+    // Keep this different from gateway.auth.token.
+    token: "REPLACE_WITH_A_LONG_RANDOM_HOOK_TOKEN",
+    path: "/hooks",
+    allowedAgentIds: ["main"],
+    allowRequestSessionKey: false,
+    allowedSessionKeyPrefixes: ["hook:fieldy", "hook:fieldy-review"],
+    mappings: [
+      {
+        id: "fieldy",
+        match: { path: "fieldy" },
+        action: "agent",
+        agentId: "main",
+        sessionKey: "hook:fieldy",
+        sessionMode: "isolated",
+        deliver: true,
+        transform: { module: "fieldy-webhook.js", export: "transform" }
+      }
+    ]
+  }
+}
